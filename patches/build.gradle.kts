@@ -12,30 +12,32 @@ patches {
     }
 }
 
-kotlin {
-    compilerOptions {
-        freeCompilerArgs.add("-Xcontext-parameters")
-    }
-}
-
-val patchListGeneratorClasspath: Configuration by configurations.creating
-
 dependencies {
-    compileOnly(libs.gson)
-    patchListGeneratorClasspath(libs.gson)
+    compileOnly(libs.morphe.patcher)
+
+    // Used by PatchListGenerator at runtime.
+    implementation(libs.gson)
+
+    // Required due to smali, or build fails.
+    implementation(libs.guava)
 }
 
 tasks {
     register<JavaExec>("generatePatchesList") {
         description = "Build patch with patch list"
         dependsOn(build)
-        classpath = rootProject.buildscript.configurations.classpath +
-            sourceSets["main"].runtimeClasspath +
-            patchListGeneratorClasspath
-        mainClass.set("util.PatchListGeneratorKt")
+        classpath = sourceSets["main"].runtimeClasspath
+        mainClass.set("app.morphe.util.PatchListGeneratorKt")
     }
 
+    // Used by gradle-semantic-release-plugin.
     publish {
         dependsOn("generatePatchesList")
+    }
+}
+
+kotlin {
+    compilerOptions {
+        freeCompilerArgs = listOf("-Xcontext-receivers")
     }
 }
