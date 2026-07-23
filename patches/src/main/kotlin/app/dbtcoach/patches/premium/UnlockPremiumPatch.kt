@@ -1,6 +1,7 @@
 package app.dbtcoach.patches.premium
 
-import app.dbtcoach.patches.shared.Constants.COMPATIBILITY_DBTCOACH
+import app.dbtcoach.patches.shared.Constants.PACKAGE_DBTCOACH
+import app.dbtcoach.patches.shared.Constants.VERSIONS_DBTCOACH
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod.Companion.toMutable
@@ -39,7 +40,7 @@ val unlockPremiumPatch = bytecodePatch(
     description = "Déverrouille toutes les fonctionnalités premium de DBT Coach en " +
         "court-circuitant la vérification d'abonnement RevenueCat.",
 ) {
-    compatibleWith(*COMPATIBILITY_DBTCOACH)
+    compatibleWith(PACKAGE_DBTCOACH to VERSIONS_DBTCOACH)
 
     execute {
         // ── Patch 1 : EntitlementInfo.isActive() ─────────────────────────────

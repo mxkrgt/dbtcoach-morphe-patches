@@ -1,18 +1,39 @@
 group = "app.dbtcoach.patches"
 
-plugins {
-    alias(libs.plugins.morphe.patches)
-}
-
-morphePatches {
+patches {
     about {
         name = "DBT Coach Morphe Patches"
-        description = "Patches Morphe pour l'application DBT Coach (co.swasth.dbtcoach) — déverrouille les fonctionnalités premium."
+        description = "Patches Morphe pour l'application DBT Coach — déverrouille les fonctionnalités premium."
         source = "https://github.com/mxkrgt/dbtcoach-morphe-patches"
-        // Remplace YOUR_USERNAME par ton nom d'utilisateur GitHub
+        author = "mxkrgt"
+        contact = "na"
+        website = "na"
+        license = "GPLv3"
     }
 }
 
+kotlin {
+    compilerOptions {
+        freeCompilerArgs.add("-Xcontext-parameters")
+    }
+}
+
+val patchListGeneratorClasspath: Configuration by configurations.creating
+
 dependencies {
-    implementation(libs.morphe.patcher)
+    compileOnly(libs.gson)
+    patchListGeneratorClasspath(libs.gson)
+}
+
+tasks {
+    register<JavaExec>("generatePatchesList") {
+        description = "Build patch with patch list"
+        dependsOn(build)
+        classpath = sourceSets["main"].runtimeClasspath + patchListGeneratorClasspath
+        mainClass.set("util.PatchListGeneratorKt")
+    }
+
+    publish {
+        dependsOn("generatePatchesList")
+    }
 }

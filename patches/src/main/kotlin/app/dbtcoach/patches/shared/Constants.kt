@@ -10,12 +10,12 @@ package app.dbtcoach.patches.shared
  * Laisse la liste vide pour accepter toutes les versions (non recommandé).
  */
 internal object Constants {
-    val COMPATIBILITY_DBTCOACH = arrayOf(
-        "co.swasth.dbtcoach" to listOf(
-            "6.4.2",
-            "6.4.1",
-            "6.4.0",
-            "6.1.3",
-        ),
+    const val PACKAGE_DBTCOACH = "co.swasth.dbtcoach"
+
+    val VERSIONS_DBTCOACH = listOf(
+        "6.4.2",
+        "6.4.1",
+        "6.4.0",
+        "6.1.3",
     )
 }
