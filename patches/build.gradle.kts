@@ -29,7 +29,9 @@ tasks {
     register<JavaExec>("generatePatchesList") {
         description = "Build patch with patch list"
         dependsOn(build)
-        classpath = sourceSets["main"].runtimeClasspath + patchListGeneratorClasspath
+        classpath = rootProject.buildscript.configurations.classpath +
+            sourceSets["main"].runtimeClasspath +
+            patchListGeneratorClasspath
         mainClass.set("util.PatchListGeneratorKt")
     }
 
