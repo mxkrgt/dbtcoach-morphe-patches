@@ -12,7 +12,7 @@ package app.dbtcoach.patches.shared
 internal object Constants {
     const val PACKAGE_DBTCOACH = "co.swasth.dbtcoach"
 
-    val VERSIONS_DBTCOACH = listOf(
+    val VERSIONS_DBTCOACH = setOf(
         "6.4.2",
         "6.4.1",
         "6.4.0",
