@@ -12,27 +12,19 @@ patches {
     }
 }
 
-val patchListGeneratorClasspath: Configuration by configurations.creating
-
 dependencies {
-    compileOnly(libs.morphe.patcher)
-
-    // Used by PatchListGenerator at runtime.
+    // implementation (not compileOnly) so morphe-patcher is on runtimeClasspath
+    // for the generatePatchesList task.
+    implementation(libs.morphe.patcher)
     implementation(libs.gson)
-
-    // Required due to smali, or build fails.
     implementation(libs.guava)
-
-    // Needed at runtime for generatePatchesList task (compileOnly excluded from runtimeClasspath).
-    patchListGeneratorClasspath(libs.morphe.patcher)
-    patchListGeneratorClasspath(libs.gson)
 }
 
 tasks {
     register<JavaExec>("generatePatchesList") {
         description = "Build patch with patch list"
         dependsOn(build)
-        classpath = sourceSets["main"].runtimeClasspath + patchListGeneratorClasspath
+        classpath = sourceSets["main"].runtimeClasspath
         mainClass.set("app.morphe.util.PatchListGeneratorKt")
     }
 
