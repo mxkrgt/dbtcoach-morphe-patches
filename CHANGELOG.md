@@ -1,3 +1,9 @@
+## [1.0.1](https://github.com/mxkrgt/dbtcoach-morphe-patches/compare/v1.0.0...v1.0.1) (2026-11-16)
+
+### 🐛 Bug Fixes
+
+* hook HybridRnIap.getAvailablePurchases instead of RevenueCat ([8d554e0](https://github.com/mxkrgt/dbtcoach-morphe-patches/commit/8d554e045fbbec962fdf7c53ebd2bb8e79aebeed))
+
 ## 1.0.0 (2026-07-23)
 
 ### 🐛 Bug Fixes
