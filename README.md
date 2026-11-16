@@ -21,11 +21,16 @@ côté JavaScript (`state.iap.isSubscribed`) :
    `HAS_PREMIUM`.
 
 Le patch branche l'implémentation native Nitro
-(`com.margelo.nitro.iap.HybridRnIap.getAvailablePurchases`) pour renvoyer une
-`Promise` contenant un faux `NitroPurchase` Android (`dbtcoach.monthly`,
-`IapPlatform.ANDROID`, `IapStore.GOOGLE`, `PurchaseState.PURCHASED`, sans
-`expirationDateIOS`). L'embranchement Android de `getPurchases()` considère donc
-l'abonnement comme actif.
+(`com.margelo.nitro.iap.HybridRnIap.getAvailablePurchases`). Une méthode d'aide
+construit un `dev.hyo.openiap.PurchaseAndroid` synthétique (`dbtcoach.monthly`,
+`IapStore.Google`, `PurchaseState.Purchased`, `transactionDate` = maintenant),
+puis appelle le convertisseur interne de la bibliothèque
+(`HybridRnIap.access$convertToNitroPurchase`) pour obtenir un `NitroPurchase`
+authentique. Le tout est renvoyé dans une `Promise` résolue, et l'embranchement
+Android de `getPurchases()` considère l'abonnement comme actif.
+
+Cette approche évite de construire à la main le `NitroPurchase` 6.5.0
+(55 paramètres avec wrappers `Variant_NullType_*`).
 
 Les achats réels, la restauration et RevenueCat ne sont pas modifiés.
 
@@ -96,7 +101,8 @@ Utilise un compte **sans abonnement** et vérifie :
 
 ## Versions compatibles
 
-- 6.4.2 (testée, patch validé sur appareil)
-- 6.4.1
-- 6.4.0
-- 6.1.3
+- **6.5.0** (versionCode 552) — seule version déclarée et vérifiée
+
+Les versions 6.4.x utilisaient une API Nitro IAP différente
+(`NitroPurchase` à 42 paramètres) : ne les ajouter qu'après vérification de leur
+smali et adaptation du patch.
